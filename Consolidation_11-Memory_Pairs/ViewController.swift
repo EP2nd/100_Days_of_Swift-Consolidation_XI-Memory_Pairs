@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = UIColor(hue: 0.6, saturation: 1, brightness: 0.3, alpha: 1)
         
         drawGridOfRectangles()
     }
@@ -49,16 +49,17 @@ class ViewController: UIViewController {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1024, height: 768))
         
         let grid = renderer.image { ctx in
+            //ctx.cgContext.translateBy(x: 20, y: 20)
             
-            for row in 0..<4 {
-                for column in 0..<4 {
-                    let rectangle = CGRect(x: column * 160, y: row * 220, width: 160, height: 100)
-                    
-                    ctx.cgContext.setStrokeColor(UIColor.systemOrange.cgColor)
-                    ctx.cgContext.setLineWidth(10)
-                    
-                    ctx.cgContext.addRect(rectangle)
-                    ctx.cgContext.drawPath(using: .stroke)
+                for row in 0..<5 {
+                    for column in 0..<5 {
+                        let rectangle = CGRect(x: column * 200, y: row * 150, width: 220, height: 165).insetBy(dx: 20, dy: 20)
+                        
+                        ctx.cgContext.setStrokeColor(UIColor.orange.cgColor)
+                        ctx.cgContext.setLineWidth(5)
+                        
+                        ctx.cgContext.addRect(rectangle)
+                        ctx.cgContext.drawPath(using: .stroke)
                 }
             }
         }
