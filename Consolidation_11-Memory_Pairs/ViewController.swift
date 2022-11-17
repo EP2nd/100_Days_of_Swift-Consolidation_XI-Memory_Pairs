@@ -11,31 +11,13 @@ class ViewController: UIViewController {
     
     @IBOutlet var gridView: UIImageView!
     
-    @IBOutlet var button1: UIButton!
-    @IBOutlet var button2: UIButton!
-    @IBOutlet var button3: UIButton!
-    @IBOutlet var button4: UIButton!
-    @IBOutlet var button5: UIButton!
-    @IBOutlet var button6: UIButton!
-    @IBOutlet var button7: UIButton!
-    @IBOutlet var button8: UIButton!
-    @IBOutlet var button9: UIButton!
-    @IBOutlet var button10: UIButton!
-    @IBOutlet var button11: UIButton!
-    @IBOutlet var button12: UIButton!
-    @IBOutlet var button13: UIButton!
-    @IBOutlet var button14: UIButton!
-    @IBOutlet var button15: UIButton!
-    @IBOutlet var button16: UIButton!
-    @IBOutlet var button17: UIButton!
-    @IBOutlet var button18: UIButton!
-    @IBOutlet var button19: UIButton!
-    @IBOutlet var button20: UIButton!
-    @IBOutlet var button21: UIButton!
-    @IBOutlet var button22: UIButton!
-    @IBOutlet var button23: UIButton!
-    @IBOutlet var button24: UIButton!
-    @IBOutlet var button25: UIButton!
+    @IBOutlet var buttons: [UIButton]!
+    
+    var pairs = [String: String]()
+    var separatedPairs = [String]()
+    
+    var score = 0
+    var numberOfCardsShown = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,19 +25,61 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor(hue: 0.6, saturation: 1, brightness: 0.3, alpha: 1)
         
         drawGridOfRectangles()
+        
+        pairs = ["var": "variable", "let": "constant", "struct": "contract", "func": "function", "enum": "enumeration", "closure": "self", "Swift": "SwiftUI", "@": "State", "map": "compactMap", "+=": "operator", "try": "catch", "Apple": "Park"]
+        separatedPairs += ["var", "variable", "let", "constant", "struct", "contract", "func", "function", "enum", "enumeration", "closure", "self", "Swift", "SwiftUI", "@", "State", "map", "compactMap", "+=", "operator", "try", "catch", "Apple", "Park", ""]
+        print(separatedPairs)
+        
+        for button in buttons {
+            button.setImage(UIImage(named: "swift"), for: .normal)
+            
+            button.imageView?.contentMode = .center
+            button.imageView?.contentMode = .scaleAspectFit
+            button.layer.borderWidth = 5
+            button.layer.borderColor = UIColor.purple.cgColor
+        }
+        
+        shuffleCards()
+    }
+    
+    func shuffleCards(action: UIAlertAction! = nil) {
+        DispatchQueue.main.async {
+            self.separatedPairs.shuffle()
+            
+            for i in 0 ..< self.buttons.count {
+                self.buttons[i].setTitle(self.separatedPairs[i], for: .normal)
+                print("Title set.")
+            }
+        }
+    }
+    
+    @IBAction func cardTapped(_ sender: UIButton) {
+        
+        let keyOrValue = sender.currentTitle!
+        
+        print(keyOrValue)
+        
+        /// Hiding the card's back:
+        sender.setImage(UIImage(), for: .normal)
+        sender.setTitle(keyOrValue, for: .normal)
+        
+        print("Button tapped.")
+    }
+    
+    func addPairs() {
+        
     }
     
     func drawGridOfRectangles() {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1024, height: 768))
         
         let grid = renderer.image { ctx in
-            //ctx.cgContext.translateBy(x: 20, y: 20)
             
                 for row in 0..<5 {
                     for column in 0..<5 {
-                        let rectangle = CGRect(x: column * 200, y: row * 150, width: 220, height: 165).insetBy(dx: 20, dy: 20)
+                        let rectangle = CGRect(x: column * 201, y: row * 151, width: 220, height: 165).insetBy(dx: 20, dy: 20)
                         
-                        ctx.cgContext.setStrokeColor(UIColor.orange.cgColor)
+                        ctx.cgContext.setStrokeColor(UIColor.magenta.cgColor)
                         ctx.cgContext.setLineWidth(5)
                         
                         ctx.cgContext.addRect(rectangle)
