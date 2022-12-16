@@ -62,9 +62,9 @@
 				B82D9D85291C5C7E003B6339 /* SceneDelegate.swift */,
 				B82D9D87291C5C7E003B6339 /* ViewController.swift */,
 				B82D9D89291C5C7E003B6339 /* Main.storyboard */,
-				B82D9D8C291C5C81003B6339 /* Assets.xcassets */,
 				B82D9D8E291C5C81003B6339 /* LaunchScreen.storyboard */,
 				B82D9D91291C5C81003B6339 /* Info.plist */,
+				B82D9D8C291C5C81003B6339 /* Assets.xcassets */,
 				B8C5983A29257F4D00D346CD /* swift.png */,
 			);
 			path = "Consolidation_11-Memory_Pairs";

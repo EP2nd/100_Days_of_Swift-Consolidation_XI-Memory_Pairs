@@ -64,6 +64,14 @@ class ViewController: UIViewController {
         sender.setTitle(keyOrValue, for: .normal)
         
         print("Button tapped.")
+        
+        numberOfCardsShown += 1
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            if self.numberOfCardsShown >= 2 {
+                sender.setImage(UIImage(named: "swift"), for: .normal)
+            }
+        }
     }
     
     func addPairs() {
