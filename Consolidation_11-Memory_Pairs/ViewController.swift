@@ -27,7 +27,9 @@ class ViewController: UIViewController {
         drawGridOfRectangles()
         
         pairs = ["var": "variable", "let": "constant", "struct": "contract", "func": "function", "enum": "enumeration", "closure": "self", "Swift": "SwiftUI", "@": "State", "map": "compactMap", "+=": "operator", "try": "catch", "Apple": "Park"]
-        separatedPairs += ["var", "variable", "let", "constant", "struct", "contract", "func", "function", "enum", "enumeration", "closure", "self", "Swift", "SwiftUI", "@", "State", "map", "compactMap", "+=", "operator", "try", "catch", "Apple", "Park", ""]
+        
+        separatedPairs += pairs.keys.map { "\($0)" }
+        separatedPairs += pairs.values.map { "\($0)" }
         print(separatedPairs)
         
         for button in buttons {
@@ -48,7 +50,6 @@ class ViewController: UIViewController {
             
             for i in 0 ..< self.buttons.count {
                 self.buttons[i].setTitle(self.separatedPairs[i], for: .normal)
-                print("Title set.")
             }
         }
     }
@@ -72,6 +73,10 @@ class ViewController: UIViewController {
                 sender.setImage(UIImage(named: "swift"), for: .normal)
             }
         }
+    }
+    
+    func promptToAddPairs() {
+        
     }
     
     func addPairs() {
