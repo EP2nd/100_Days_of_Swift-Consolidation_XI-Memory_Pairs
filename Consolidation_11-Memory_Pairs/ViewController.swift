@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         
         separatedPairs += pairs.keys.map { "\($0)" }
         separatedPairs += pairs.values.map { "\($0)" }
-        print(separatedPairs)
+        separatedPairs += [""]
         
         for button in buttons {
             button.setImage(UIImage(named: "swift"), for: .normal)
@@ -56,21 +56,20 @@ class ViewController: UIViewController {
     
     @IBAction func cardTapped(_ sender: UIButton) {
         
-        let keyOrValue = sender.currentTitle!
-        
-        print(keyOrValue)
-        
-        /// Hiding the card's back:
-        sender.setImage(UIImage(), for: .normal)
-        sender.setTitle(keyOrValue, for: .normal)
-        
-        print("Button tapped.")
+        guard numberOfCardsShown < 2 else { return }
         
         numberOfCardsShown += 1
         
+        let keyOrValue = sender.currentTitle!
+        
+        /// Hiding the card's back and showing its content:
+        sender.setImage(UIImage(), for: .normal)
+        sender.setTitle(keyOrValue, for: .normal)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            if self.numberOfCardsShown >= 2 {
+            if self.numberOfCardsShown < 3 {
                 sender.setImage(UIImage(named: "swift"), for: .normal)
+                self.numberOfCardsShown = 0
             }
         }
     }
@@ -84,10 +83,10 @@ class ViewController: UIViewController {
     }
     
     func drawGridOfRectangles() {
+        
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1024, height: 768))
         
         let grid = renderer.image { ctx in
-            
                 for row in 0..<5 {
                     for column in 0..<5 {
                         let rectangle = CGRect(x: column * 201, y: row * 151, width: 220, height: 165).insetBy(dx: 20, dy: 20)
@@ -100,6 +99,7 @@ class ViewController: UIViewController {
                 }
             }
         }
+        
         gridView.image = grid
     }
 }
