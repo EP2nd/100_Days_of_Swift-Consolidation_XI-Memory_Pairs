@@ -12,7 +12,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Consolidation_11_Memory_Pairs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Consolidation_11_Memory_Pairs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -311,14 +311,40 @@
         <!--Initial View Controller-->
         <scene sceneID="lpd-2u-csd">
             <objects>
-                <viewController storyboardIdentifier="Start" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nhB-yN-wmG" customClass="InitialViewController" customModule="Consolidation_11_Memory_Pairs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Start" id="nhB-yN-wmG" customClass="InitialViewController" customModule="Consolidation_11_Memory_Pairs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="R3R-4r-4vb">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wmT-i8-0om">
+                                <rect key="frame" x="466" y="357" width="95" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Start" subtitle="">
+                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle0"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="startGame:" destination="nhB-yN-wmG" eventType="touchUpInside" id="vmX-dq-K4n"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L8i-4f-38H">
+                                <rect key="frame" x="466" y="420" width="96" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Add pairs"/>
+                                <connections>
+                                    <action selector="addPairs:" destination="nhB-yN-wmG" eventType="touchUpInside" id="Fo9-2a-Zq5"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="dio-80-Nxp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="so3-z1-hZ4"/>
+                    <connections>
+                        <outlet property="addPairsButton" destination="L8i-4f-38H" id="Gbh-6o-Lft"/>
+                        <outlet property="startGameButton" destination="wmT-i8-0om" id="0zc-wa-8jq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="70H-za-k4a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

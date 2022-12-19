@@ -74,14 +74,6 @@ class ViewController: UIViewController {
         }
     }
     
-    func promptToAddPairs() {
-        
-    }
-    
-    func addPairs() {
-        
-    }
-    
     func drawGridOfRectangles() {
         
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1024, height: 768))
