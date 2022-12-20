@@ -1,0 +1,12 @@
+var: variable
+let: constant
+struct: contract
+func: function
+enum: enumeration
+closure: self
+Swift: SwiftUI
+@: State
+map: compactMap
++=: operator
+try: catch
+Apple: Park

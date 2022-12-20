@@ -13,8 +13,11 @@ class ViewController: UIViewController {
     
     @IBOutlet var buttons: [UIButton]!
     
-    var pairs = [String: String]()
+    var pairs = ["var": "variable", "let": "constant", "struct": "contract", "func": "function", "enum": "enumeration", "closure": "self", "Swift": "SwiftUI", "@": "State", "map": "compactMap", "+=": "operator", "try": "catch", "Apple": "Park"]
     var separatedPairs = [String]()
+    
+    var pairsTableViewController = PairsTableViewController()
+    var separatedPairs2 = [String]()
     
     var score = 0
     var numberOfCardsShown = 0
@@ -26,11 +29,10 @@ class ViewController: UIViewController {
         
         drawGridOfRectangles()
         
-        pairs = ["var": "variable", "let": "constant", "struct": "contract", "func": "function", "enum": "enumeration", "closure": "self", "Swift": "SwiftUI", "@": "State", "map": "compactMap", "+=": "operator", "try": "catch", "Apple": "Park"]
-        
         separatedPairs += pairs.keys.map { "\($0)" }
         separatedPairs += pairs.values.map { "\($0)" }
         separatedPairs += [""]
+        print(separatedPairs)
         
         for button in buttons {
             button.setImage(UIImage(named: "swift"), for: .normal)
