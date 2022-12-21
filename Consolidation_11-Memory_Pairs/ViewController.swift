@@ -13,11 +13,13 @@ class ViewController: UIViewController {
     
     @IBOutlet var buttons: [UIButton]!
     
-    var pairs = ["var": "variable", "let": "constant", "struct": "contract", "func": "function", "enum": "enumeration", "closure": "self", "Swift": "SwiftUI", "@": "State", "map": "compactMap", "+=": "operator", "try": "catch", "Apple": "Park"]
-    var separatedPairs = [String]()
+    /* var pairs = ["var": "variable", "let": "constant", "struct": "contract", "func": "function", "enum": "enumeration", "closure": "self", "Swift": "SwiftUI", "@": "State", "map": "compactMap", "+=": "operator", "try": "catch", "Apple": "Park"] */
+//  var separatedPairs = [String]()
     
+    var initialView = InitialViewController()
     var pairsTableViewController = PairsTableViewController()
-    var separatedPairs2 = [String]()
+    
+    var pairs = [Pairs]()
     
     var score = 0
     var numberOfCardsShown = 0
@@ -29,10 +31,10 @@ class ViewController: UIViewController {
         
         drawGridOfRectangles()
         
-        separatedPairs += pairs.keys.map { "\($0)" }
-        separatedPairs += pairs.values.map { "\($0)" }
-        separatedPairs += [""]
-        print(separatedPairs)
+        /* initialView.separatedPairs += pairs.keys.map { "\($0)" }
+        initialView.separatedPairs += pairs.values.map { "\($0)" }
+        initialView.separatedPairs += [""]
+        print(initialView.separatedPairs) */
         
         for button in buttons {
             button.setImage(UIImage(named: "swift"), for: .normal)
@@ -47,11 +49,13 @@ class ViewController: UIViewController {
     }
     
     func shuffleCards(action: UIAlertAction! = nil) {
+        print(Pairs.separatedPairs)
+        
         DispatchQueue.main.async {
-            self.separatedPairs.shuffle()
+            Pairs.separatedPairs.shuffle()
             
             for i in 0 ..< self.buttons.count {
-                self.buttons[i].setTitle(self.separatedPairs[i], for: .normal)
+                self.buttons[i].setTitle(Pairs.separatedPairs[i], for: .normal)
             }
         }
     }

@@ -350,6 +350,34 @@
             </objects>
             <point key="canvasLocation" x="159.9609375" y="4.6875"/>
         </scene>
+        <!--Pairs Table View Controller-->
+        <scene sceneID="6A2-zi-mYR">
+            <objects>
+                <tableViewController storyboardIdentifier="Pairs" id="cUd-wa-ux1" customClass="PairsTableViewController" customModule="Consolidation_11_Memory_Pairs" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Lse-fm-kcA">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="4Mi-uh-ePM">
+                                <rect key="frame" x="0.0" y="50" width="1024" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4Mi-uh-ePM" id="CtN-uF-EVY">
+                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="cUd-wa-ux1" id="gLA-n9-N4N"/>
+                            <outlet property="delegate" destination="cUd-wa-ux1" id="3l2-Bo-7Qc"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Za1-pc-Jfg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="160" y="764"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ajp-S1-cOj">
             <objects>
