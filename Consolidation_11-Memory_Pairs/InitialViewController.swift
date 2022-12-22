@@ -10,12 +10,7 @@ import UIKit
 class InitialViewController: UIViewController {
     
     @IBOutlet var startGameButton: UIButton!
-    @IBOutlet var addPairsButton: UIButton!
-    
-//  var allPairs = [String: String]()
-//  var separatedPairs = [String]()
-    
-//  var pairs = [Pairs]()
+    @IBOutlet var editPairsButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +24,6 @@ class InitialViewController: UIViewController {
                 for line in lines {
                     let components = line.components(separatedBy: ": ")
                     
-                    //allPairs[components[0]] = components[1]
                     Pairs.allPairs[components[0]] = components[1]
                 }
             }
@@ -38,8 +32,6 @@ class InitialViewController: UIViewController {
         Pairs.separatedPairs += Pairs.allPairs.keys.map { "\($0)" }
         Pairs.separatedPairs += Pairs.allPairs.values.map { "\($0)" }
         Pairs.separatedPairs += [""]
-        
-        print(Pairs.separatedPairs)
     }
     
     @IBAction func startGame(_ sender: Any) {
@@ -48,7 +40,7 @@ class InitialViewController: UIViewController {
         }
     }
     
-    @IBAction func addPairs(_ sender: Any) {
+    @IBAction func editPairs(_ sender: Any) {
         
     }
 }
