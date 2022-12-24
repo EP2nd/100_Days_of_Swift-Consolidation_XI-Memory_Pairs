@@ -8,5 +8,5 @@
 import UIKit
 
 class PairsCell: UITableViewCell {
-    @IBOutlet var title: UIView!
+    @IBOutlet var title: UILabel!
 }

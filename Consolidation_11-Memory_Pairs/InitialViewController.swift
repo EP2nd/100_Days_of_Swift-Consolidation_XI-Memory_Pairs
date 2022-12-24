@@ -10,7 +10,7 @@ import UIKit
 class InitialViewController: UIViewController {
     
     @IBOutlet var startGameButton: UIButton!
-    @IBOutlet var editPairsButton: UIButton!
+    @IBOutlet var addPairsButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,9 @@ class InitialViewController: UIViewController {
         }
     }
     
-    @IBAction func editPairs(_ sender: Any) {
-        
+    @IBAction func addPairs(_ sender: Any) {
+        if let viewController = storyboard?.instantiateViewController(withIdentifier: "PairsTableViewController") as? PairsTableViewController {
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
