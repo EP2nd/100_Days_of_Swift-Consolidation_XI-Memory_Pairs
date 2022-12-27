@@ -13,7 +13,8 @@ class ViewController: UIViewController {
     
     @IBOutlet var buttons: [UIButton]!
     
-    var initialView = InitialViewController()
+    let initialView = InitialViewController()
+    var separatedPais = Pairs.separatedPairs
     
     var score = 0
     var numberOfCardsShown = 0
@@ -40,10 +41,10 @@ class ViewController: UIViewController {
     func shuffleCards(action: UIAlertAction! = nil) {
         
         DispatchQueue.main.async {
-            Pairs.separatedPairs.shuffle()
+            self.separatedPais.shuffle()
             
             for i in 0 ..< self.buttons.count {
-                self.buttons[i].setTitle(Pairs.separatedPairs[i], for: .normal)
+                self.buttons[i].setTitle(self.separatedPais[i], for: .normal)
             }
         }
     }

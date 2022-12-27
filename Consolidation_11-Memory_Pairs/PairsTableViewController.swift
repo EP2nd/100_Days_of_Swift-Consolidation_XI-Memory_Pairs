@@ -9,6 +9,8 @@ import UIKit
 
 class PairsTableViewController: UITableViewController {
 
+    var separatedPairs = Pairs.separatedPairs
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,6 +25,21 @@ class PairsTableViewController: UITableViewController {
         
         navigationController?.isToolbarHidden = false
     }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        
+        if Pairs.allPairs.count < 12 {
+                
+                let alertController = UIAlertController(title: "Too few pairs", message: "Please fill the game's dictionary with at least \(12 - Pairs.allPairs.count) pairs.", preferredStyle: .alert)
+                
+                alertController.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                present(alertController, animated: true)
+        }
+    }
+    
+    
     
     @objc func promptForAddition() {
         
@@ -47,11 +64,7 @@ class PairsTableViewController: UITableViewController {
     func addPair(_ key: String, _ value: String) {
         Pairs.allPairs["\(key)"] = "\(value)"
         
-        let indexPath = IndexPath(row: 0, section: 0)
-        
         tableView.reloadData()
-        
-        return
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,8 +91,6 @@ class PairsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
         if editingStyle == .delete {
             
             guard let cell = tableView.cellForRow(at: indexPath) else { return }
@@ -97,7 +108,6 @@ class PairsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        
         return true
     }
 }
