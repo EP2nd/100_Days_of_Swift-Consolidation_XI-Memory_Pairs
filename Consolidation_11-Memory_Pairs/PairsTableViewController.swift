@@ -16,6 +16,10 @@ class PairsTableViewController: UITableViewController {
         
         title = "Pairs"
         
+        navigationController?.navigationBar.isHidden = false
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(backAction(sender:)))
+        
         navigationItem.rightBarButtonItem = editButtonItem
         
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAddition))
@@ -26,20 +30,21 @@ class PairsTableViewController: UITableViewController {
         navigationController?.isToolbarHidden = false
     }
     
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-        
+    @objc func backAction(sender: AnyObject) {
         if Pairs.allPairs.count < 12 {
-                
-                let alertController = UIAlertController(title: "Too few pairs", message: "Please fill the game's dictionary with at least \(12 - Pairs.allPairs.count) pairs.", preferredStyle: .alert)
-                
-                alertController.addAction(UIAlertAction(title: "OK", style: .default))
-                
-                present(alertController, animated: true)
+            
+            let alertController = UIAlertController(title: "Too few pairs", message: "Please fill the game's dictionary with at least \(12 - Pairs.allPairs.count) pair(s).", preferredStyle: .alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            present(alertController, animated: true)
+            
+            return
+            
+        } else {
+            navigationController?.popViewController(animated: true)
         }
     }
-    
-    
     
     @objc func promptForAddition() {
         
