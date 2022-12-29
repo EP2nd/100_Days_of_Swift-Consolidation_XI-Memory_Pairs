@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet var buttons: [UIButton]!
     
     var pairToCheck = [String]()
+    var buttonsTags = [Int]()
     
     let initialView = InitialViewController()
     let allPairs = Pairs.allPairs
@@ -21,6 +22,7 @@ class ViewController: UIViewController {
     
     var score = 0
     var numberOfCardsShown = 0
+    var numberOfCardsPaired = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,13 +67,11 @@ class ViewController: UIViewController {
         guard numberOfCardsShown < 2 else { return }
         
         numberOfCardsShown += 1
-        print(sender.tag)
-        print(numberOfCardsShown)
         
         let keyOrValue = sender.currentTitle!
         
         pairToCheck.append(keyOrValue)
-        print(pairToCheck)
+        buttonsTags.append(sender.tag)
         
         /// Hiding the card's back and showing its content:
         sender.setImage(UIImage(), for: .normal)
@@ -80,42 +80,86 @@ class ViewController: UIViewController {
         if numberOfCardsShown < 3 && pairToCheck.count == 2 {
             
             let isFirstKey = allPairs[pairToCheck[0]] != nil
-            print(isFirstKey)
             let isSecondKey = allPairs[pairToCheck[1]] != nil
-            print(isSecondKey)
             
             if isFirstKey {
-                let value = allPairs[pairToCheck[0]]!
-                print(value)
                 
                 if allPairs[pairToCheck[0]] == pairToCheck[1] {
                     score += 1
-                    print(score)
+                    numberOfCardsPaired += 1
                     
-                    sender.isHidden = true
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        sender.setImage(UIImage(named: "swift"), for: .normal)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.buttons[self.buttonsTags[0]].isHidden = true
+                        self.buttons[self.buttonsTags[1]].isHidden = true
                         self.numberOfCardsShown = 0
                         self.pairToCheck.removeAll()
+                        self.buttonsTags.removeAll()
+                    }
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.buttons[self.buttonsTags[0]].setImage(UIImage(named: "swift"), for: .normal)
+                        self.buttons[self.buttonsTags[1]].setImage(UIImage(named: "swift"), for: .normal)
+                        self.numberOfCardsShown = 0
+                        self.pairToCheck.removeAll()
+                        self.buttonsTags.removeAll()
                     }
                 }
             } else if isSecondKey {
-                let value = allPairs[pairToCheck[1]]!
-                print(value)
                 
                 if allPairs[pairToCheck[1]] == pairToCheck[0] {
                     score += 1
-                    print(score)
+                    numberOfCardsPaired += 1
                     
-                    sender.isHidden = true
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        sender.setImage(UIImage(named: "swift"), for: .normal)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.buttons[self.buttonsTags[0]].isHidden = true
+                        self.buttons[self.buttonsTags[1]].isHidden = true
                         self.numberOfCardsShown = 0
                         self.pairToCheck.removeAll()
+                        self.buttonsTags.removeAll()
+                    }
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.buttons[self.buttonsTags[0]].setImage(UIImage(named: "swift"), for: .normal)
+                        self.buttons[self.buttonsTags[1]].setImage(UIImage(named: "swift"), for: .normal)
+                        self.numberOfCardsShown = 0
+                        self.pairToCheck.removeAll()
+                        self.buttonsTags.removeAll()
                     }
                 }
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.buttons[self.buttonsTags[0]].setImage(UIImage(named: "swift"), for: .normal)
+                    self.buttons[self.buttonsTags[1]].setImage(UIImage(named: "swift"), for: .normal)
+                    self.numberOfCardsShown = 0
+                    self.pairToCheck.removeAll()
+                    self.buttonsTags.removeAll()
+                }
+            }
+        }
+        
+        if numberOfCardsPaired == 12 {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                
+                let alertController = UIAlertController(title: "Congratulations!", message: "You managed to pair all the cards!\nTap \"Continue\" to play again!", preferredStyle: .alert)
+                
+                alertController.addAction(UIAlertAction(title: "Continue", style: .default) { [weak self] _ in
+                    
+                    for button in self!.buttons {
+                        
+                        button.setImage(UIImage(named: "swift"), for: .normal)
+                        
+                        button.isHidden = false
+                        
+                        self!.numberOfCardsPaired = 0
+                        
+                        self!.score = 0
+                    }
+                    
+                    self!.shuffleCards()
+                })
+                
+                self.present(alertController, animated: true)
             }
         }
     }

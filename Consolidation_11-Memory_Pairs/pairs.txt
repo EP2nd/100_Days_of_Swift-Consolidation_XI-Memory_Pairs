@@ -1,12 +1,12 @@
 var: variable
 let: constant
-struct: contract
+struct: structure
 func: function
 enum: enumeration
 closure: self
-Swift: SwiftUI
-@: State
-map: compactMap
-+=: operator
+#selector: @objc
+@State: private var
+init: initializer
+...: closed range
 try: catch
-Apple: Park
+continue: skip
