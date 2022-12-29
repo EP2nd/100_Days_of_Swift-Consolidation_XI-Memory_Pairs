@@ -5,6 +5,7 @@
 //  Created by Edwin Przeźwiecki Jr. on 18/12/2022.
 //
 
+import LocalAuthentication
 import UIKit
 
 class InitialViewController: UIViewController {
@@ -23,7 +24,6 @@ class InitialViewController: UIViewController {
                 
                 for line in lines {
                     let components = line.components(separatedBy: ": ")
-                    
                     Pairs.allPairs[components[0]] = components[1]
                 }
             }
@@ -41,8 +41,32 @@ class InitialViewController: UIViewController {
     }
     
     @IBAction func addPairs(_ sender: Any) {
-        if let viewController = storyboard?.instantiateViewController(withIdentifier: "PairsTableViewController") as? PairsTableViewController {
-            navigationController?.pushViewController(viewController, animated: true)
+        
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Please identify yourself."
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
+                
+                DispatchQueue.main.async {
+                    if success {
+                        if let viewController = self?.storyboard?.instantiateViewController(withIdentifier: "PairsTableViewController") as? PairsTableViewController {
+                            self?.navigationController?.pushViewController(viewController, animated: true)
+                        }
+                    } else {
+                        let alertController = UIAlertController(title: "Authentication failed", message: "You could not be verified. Please try again.", preferredStyle: .alert)
+                        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+                        
+                        self?.present(alertController, animated: true)
+                    }
+                }
+            }
+        } else {
+            let alertController = UIAlertController(title: "Biometry unavailable", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            present(alertController, animated: true)
         }
     }
 }

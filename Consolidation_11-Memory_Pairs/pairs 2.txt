@@ -1,0 +1,12 @@
+var: variable
+let: constant
+struct: structure
+func: function
+enum: enumeration
+closure: self
+#selector: @objc
+@State: private var
+init: initializer
+...: closed range
+try: catch
+continue: skip
