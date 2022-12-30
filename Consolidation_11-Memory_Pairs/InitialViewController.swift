@@ -8,6 +8,13 @@
 import LocalAuthentication
 import UIKit
 
+extension UIView {
+    func blink() {
+        self.alpha = 0
+        UIView.animate(withDuration: 1, delay: 0, options: [.autoreverse, .repeat, .allowUserInteraction], animations: { self.alpha = 1 })
+    }
+}
+
 class InitialViewController: UIViewController {
     
     @IBOutlet var startGameButton: UIButton!
@@ -17,6 +24,8 @@ class InitialViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(hue: 0.6, saturation: 1, brightness: 0.3, alpha: 1)
+        
+        startGameButton.blink()
         
         if let pairsURL = Bundle.main.url(forResource: "pairs", withExtension: "txt") {
             if let pairs = try? String(contentsOf: pairsURL) {
