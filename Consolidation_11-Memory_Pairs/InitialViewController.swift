@@ -20,6 +20,9 @@ class InitialViewController: UIViewController {
     @IBOutlet var startGameButton: UIButton!
     @IBOutlet var addPairsButton: UIButton!
     
+    var pairs = [Pairs]()
+    var firstRun = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,20 +30,29 @@ class InitialViewController: UIViewController {
         
         startGameButton.blink()
         
-        if let pairsURL = Bundle.main.url(forResource: "pairs", withExtension: "txt") {
-            if let pairs = try? String(contentsOf: pairsURL) {
-                let lines = pairs.components(separatedBy: "\n")
-                
-                for line in lines {
-                    let components = line.components(separatedBy: ": ")
-                    Pairs.allPairs[components[0]] = components[1]
+        
+        
+        if !firstRun {
+            if let pairsURL = Bundle.main.url(forResource: "pairs", withExtension: "txt") {
+                if let pairs = try? String(contentsOf: pairsURL) {
+                    let lines = pairs.components(separatedBy: "\n")
+                    
+                    for line in lines {
+                        let components = line.components(separatedBy: ": ")
+                        Pairs.allPairs[components[0]] = components[1]
+                    }
                 }
             }
+            
+            Pairs.separatedPairs += Pairs.allPairs.keys.map { "\($0)" }
+            Pairs.separatedPairs += Pairs.allPairs.values.map { "\($0)" }
+            Pairs.separatedPairs += [""]
+            
+            firstRun.toggle()
+            SavedPairs.save(pairs: pairs)
+        } else {
+            pairs = SavedPairs.load()
         }
-        
-        Pairs.separatedPairs += Pairs.allPairs.keys.map { "\($0)" }
-        Pairs.separatedPairs += Pairs.allPairs.values.map { "\($0)" }
-        Pairs.separatedPairs += [""]
     }
     
     @IBAction func startGame(_ sender: Any) {
