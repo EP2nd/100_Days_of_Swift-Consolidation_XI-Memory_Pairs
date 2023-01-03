@@ -10,5 +10,4 @@ import Foundation
 struct Pairs: Codable {
     static var allPairs = [String: String]()
     static var separatedPairs = [String]()
-    static var firstRun = Bool()
 }

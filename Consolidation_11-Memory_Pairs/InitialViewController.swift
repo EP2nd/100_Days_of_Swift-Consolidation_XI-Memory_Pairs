@@ -21,7 +21,8 @@ class InitialViewController: UIViewController {
     @IBOutlet var addPairsButton: UIButton!
     
     var pairs = [Pairs]()
-    var firstRun = false
+    
+    var firstRun = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +31,20 @@ class InitialViewController: UIViewController {
         
         startGameButton.blink()
         
+        let defaults = UserDefaults.standard
         
+        if let savedRunState = defaults.value(forKey: "firstRun") as? Bool {
+            firstRun = savedRunState
+            print(firstRun)
+        }
         
         if !firstRun {
+            DispatchQueue.global().async { [ weak self ] in
+                self?.pairs = SavedPairs.load()
+                print("Second run")
+            }
+        } else if firstRun {
+            
             if let pairsURL = Bundle.main.url(forResource: "pairs", withExtension: "txt") {
                 if let pairs = try? String(contentsOf: pairsURL) {
                     let lines = pairs.components(separatedBy: "\n")
@@ -48,10 +60,10 @@ class InitialViewController: UIViewController {
             Pairs.separatedPairs += Pairs.allPairs.values.map { "\($0)" }
             Pairs.separatedPairs += [""]
             
+            print(Pairs.separatedPairs)
+            
             firstRun.toggle()
-            SavedPairs.save(pairs: pairs)
-        } else {
-            pairs = SavedPairs.load()
+            save()
         }
     }
     
@@ -89,5 +101,11 @@ class InitialViewController: UIViewController {
             
             present(alertController, animated: true)
         }
+    }
+    
+    func save() {
+        let defaults = UserDefaults.standard
+        
+        defaults.set(firstRun, forKey: "firstRun")
     }
 }

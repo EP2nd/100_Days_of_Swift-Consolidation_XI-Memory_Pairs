@@ -9,7 +9,8 @@ import UIKit
 
 class PairsTableViewController: UITableViewController {
 
-    var separatedPairs = Pairs.separatedPairs
+//    var separatedPairs = Pairs.separatedPairs
+//    var pairs = [Pairs]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +68,10 @@ class PairsTableViewController: UITableViewController {
     }
     
     func addPair(_ key: String, _ value: String) {
+        
         Pairs.allPairs["\(key)"] = "\(value)"
+        
+        SavedPairs.save(pairs: pairs)
         
         tableView.reloadData()
     }
@@ -107,6 +111,8 @@ class PairsTableViewController: UITableViewController {
             let key = components[0]
                 
             Pairs.allPairs.removeValue(forKey: key)
+            
+            SavedPairs.save(pairs: pairs)
             
             tableView.reloadData()
         }
