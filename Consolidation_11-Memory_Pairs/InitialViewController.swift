@@ -20,7 +20,7 @@ class InitialViewController: UIViewController {
     @IBOutlet var startGameButton: UIButton!
     @IBOutlet var addPairsButton: UIButton!
     
-    var pairs = [Pairs]()
+    var pairs = SavedPairs()
     
     var firstRun = true
     
@@ -39,9 +39,10 @@ class InitialViewController: UIViewController {
         }
         
         if !firstRun {
-            DispatchQueue.global().async { [ weak self ] in
-                self?.pairs = SavedPairs.load()
+            DispatchQueue.global().async { [weak self] in
+                self?.pairs.load()
                 print("Second run")
+                print(SavedPairs.allPairs)
             }
         } else if firstRun {
             
@@ -51,19 +52,20 @@ class InitialViewController: UIViewController {
                     
                     for line in lines {
                         let components = line.components(separatedBy: ": ")
-                        Pairs.allPairs[components[0]] = components[1]
+                        SavedPairs.allPairs[components[0]] = components[1]
                     }
                 }
             }
             
-            Pairs.separatedPairs += Pairs.allPairs.keys.map { "\($0)" }
-            Pairs.separatedPairs += Pairs.allPairs.values.map { "\($0)" }
-            Pairs.separatedPairs += [""]
-            
-            print(Pairs.separatedPairs)
+            SavedPairs.separatedPairs += SavedPairs.allPairs.keys.map { "\($0)" }
+            SavedPairs.separatedPairs += SavedPairs.allPairs.values.map { "\($0)" }
+            SavedPairs.separatedPairs += [""]
             
             firstRun.toggle()
             save()
+            
+            pairs.save()
+            print(SavedPairs.separatedPairs)
         }
     }
     

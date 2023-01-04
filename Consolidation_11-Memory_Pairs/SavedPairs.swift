@@ -9,31 +9,36 @@ import Foundation
 
 struct SavedPairs {
     
-    static func load() -> [Pairs] {
+    static var allPairs = [String: String]()
+    static var separatedPairs = [String]()
+    
+    mutating func load() {
         
         let defaults = UserDefaults.standard
         let jsonDecoder = JSONDecoder()
         
-        var pairs = [Pairs]()
+//        var pairs = [Pairs]()
         
-        if let savedPairs = defaults.object(forKey: "pairs") as? Data {
+        if let savedAllPairs = defaults.value(forKey: "allPairs") as? Data, let savedSeparatedPairs = defaults.value(forKey: "separatedPairs") as? Data {
             
             do {
-                pairs = try jsonDecoder.decode([Pairs].self, from: savedPairs)
+                SavedPairs.allPairs = try jsonDecoder.decode([String:String].self, from: savedAllPairs)
+                SavedPairs.separatedPairs = try jsonDecoder.decode([String].self, from: savedSeparatedPairs)
             } catch {
                 print("Failed to load saved pairs.")
             }
         }
-        return pairs
     }
     
-    static func save(pairs: [Pairs]) {
+    mutating func save() {
         
         let defaults = UserDefaults.standard
         let jsonEncoder = JSONEncoder()
         
-        if let savedPairs = try? jsonEncoder.encode(pairs) {
-            defaults.set(savedPairs, forKey: "pairs")
+        if let savedAllPairs = try? jsonEncoder.encode(SavedPairs.allPairs), let savedSeparatedPairs = try? jsonEncoder.encode(SavedPairs.separatedPairs) {
+            
+            defaults.set(savedAllPairs, forKey: "allPairs")
+            defaults.set(savedSeparatedPairs, forKey: "separatedPairs")
         } else {
             print("Failed to save pairs.")
         }

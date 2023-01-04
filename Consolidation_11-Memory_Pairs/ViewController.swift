@@ -17,8 +17,8 @@ class ViewController: UIViewController {
     var buttonsTags = [Int]()
     
     let initialView = InitialViewController()
-    let allPairs = Pairs.allPairs
-    var separatedPairs = Pairs.separatedPairs
+    var allPairs = SavedPairs.allPairs
+    var separatedPairs = SavedPairs.separatedPairs
     
     var score = 0
     var numberOfCardsShown = 0
@@ -48,8 +48,8 @@ class ViewController: UIViewController {
     func shuffleCards(action: UIAlertAction! = nil) {
         
         separatedPairs.removeAll()
-        separatedPairs += Pairs.allPairs.keys.map { "\($0)" }
-        separatedPairs += Pairs.allPairs.values.map { "\($0)" }
+        separatedPairs += allPairs.keys.map { "\($0)" }
+        separatedPairs += allPairs.values.map { "\($0)" }
         separatedPairs += [""]
         
         DispatchQueue.main.async {

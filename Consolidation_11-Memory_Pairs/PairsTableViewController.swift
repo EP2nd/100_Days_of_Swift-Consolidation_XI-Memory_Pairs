@@ -10,7 +10,9 @@ import UIKit
 class PairsTableViewController: UITableViewController {
 
 //    var separatedPairs = Pairs.separatedPairs
-//    var pairs = [Pairs]()
+    var pairs = SavedPairs()
+//    var allPairs = SavedPairs.allPairs
+    var separatedPairs = SavedPairs.separatedPairs
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +31,14 @@ class PairsTableViewController: UITableViewController {
         toolbarItems = [spacer, add]
         
         navigationController?.isToolbarHidden = false
+        
+        tableView.reloadData()
     }
     
     @objc func backAction(sender: AnyObject) {
-        if Pairs.allPairs.count < 12 {
-            
-            let alertController = UIAlertController(title: "Too few pairs", message: "Please fill the game's dictionary with at least \(12 - Pairs.allPairs.count) pair(s).", preferredStyle: .alert)
+        if SavedPairs.allPairs.count < 12 {
+        
+            let alertController = UIAlertController(title: "Too few pairs", message: "Please fill the game's dictionary with at least \(12 - SavedPairs.allPairs.count) pair(s).", preferredStyle: .alert)
             
             alertController.addAction(UIAlertAction(title: "OK", style: .default))
             
@@ -69,15 +73,18 @@ class PairsTableViewController: UITableViewController {
     
     func addPair(_ key: String, _ value: String) {
         
-        Pairs.allPairs["\(key)"] = "\(value)"
+        SavedPairs.allPairs["\(key)"] = "\(value)"
         
-        SavedPairs.save(pairs: pairs)
-        
+        pairs.save()
+        //pairs.load()
+            
         tableView.reloadData()
+        
+        print(SavedPairs.allPairs)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Pairs.allPairs.count
+        return SavedPairs.allPairs.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,8 +92,8 @@ class PairsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         if let cell = cell as? PairsCell {
-            let key = Array(Pairs.allPairs.keys)[indexPath.row]
-            let value = Array(Pairs.allPairs.values)[indexPath.row]
+            let key = Array(SavedPairs.allPairs.keys)[indexPath.row]
+            let value = Array(SavedPairs.allPairs.values)[indexPath.row]
             
             cell.textLabel?.text = "\(key): \(value)"
         }
@@ -110,11 +117,14 @@ class PairsTableViewController: UITableViewController {
             
             let key = components[0]
                 
-            Pairs.allPairs.removeValue(forKey: key)
+            SavedPairs.allPairs.removeValue(forKey: key)
             
-            SavedPairs.save(pairs: pairs)
+            pairs.save()
+//            pairs.load()
             
             tableView.reloadData()
+            
+            print(SavedPairs.allPairs)
         }
     }
 
