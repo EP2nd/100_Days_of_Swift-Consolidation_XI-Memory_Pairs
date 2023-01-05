@@ -9,43 +9,50 @@ import UIKit
 
 class PairsTableViewController: UITableViewController {
 
-//    var separatedPairs = Pairs.separatedPairs
     var pairs = SavedPairs()
-//    var allPairs = SavedPairs.allPairs
-    var separatedPairs = SavedPairs.separatedPairs
+    
+    var addPairButton = UIBarButtonItem()
+    
+    var numberOfEntries = 11 {
+        didSet {
+            if numberOfEntries < 12 {
+                addPairButton.isEnabled = true
+            } else {
+                addPairButton.isEnabled = false
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Pairs"
         
-        navigationController?.navigationBar.isHidden = false
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(backAction(sender:)))
         
         navigationItem.rightBarButtonItem = editButtonItem
         
-        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAddition))
+        addPairButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAddition))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         
-        toolbarItems = [spacer, add]
+        toolbarItems = [spacer, addPairButton]
         
+        navigationController?.navigationBar.isHidden = false
         navigationController?.isToolbarHidden = false
         
-        tableView.reloadData()
+        numberOfEntries += 1
     }
     
     @objc func backAction(sender: AnyObject) {
-        if SavedPairs.allPairs.count < 12 {
         
-            let alertController = UIAlertController(title: "Too few pairs", message: "Please fill the game's dictionary with at least \(12 - SavedPairs.allPairs.count) pair(s).", preferredStyle: .alert)
+        if SavedPairs.allPairs.count < 12 {
+            let alertController = UIAlertController(title: "Too few pairs", message: "Please fill the game's dictionary with \(12 - SavedPairs.allPairs.count) pair(s).", preferredStyle: .alert)
             
             alertController.addAction(UIAlertAction(title: "OK", style: .default))
             
             present(alertController, animated: true)
             
             return
-            
         } else {
             navigationController?.popViewController(animated: true)
         }
@@ -76,11 +83,10 @@ class PairsTableViewController: UITableViewController {
         SavedPairs.allPairs["\(key)"] = "\(value)"
         
         pairs.save()
-        //pairs.load()
+        
+        numberOfEntries += 1
             
         tableView.reloadData()
-        
-        print(SavedPairs.allPairs)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -112,19 +118,16 @@ class PairsTableViewController: UITableViewController {
             guard let cell = tableView.cellForRow(at: indexPath) else { return }
             
             let title = cell.textLabel!.text
-                    
             let components = title!.components(separatedBy: ": ")
-            
             let key = components[0]
                 
             SavedPairs.allPairs.removeValue(forKey: key)
             
             pairs.save()
-//            pairs.load()
+            
+            numberOfEntries -= 1
             
             tableView.reloadData()
-            
-            print(SavedPairs.allPairs)
         }
     }
 

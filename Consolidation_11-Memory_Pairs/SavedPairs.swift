@@ -17,9 +17,8 @@ struct SavedPairs {
         let defaults = UserDefaults.standard
         let jsonDecoder = JSONDecoder()
         
-//        var pairs = [Pairs]()
-        
-        if let savedAllPairs = defaults.value(forKey: "allPairs") as? Data, let savedSeparatedPairs = defaults.value(forKey: "separatedPairs") as? Data {
+        if let savedAllPairs = defaults.value(forKey: "allPairs") as? Data,
+           let savedSeparatedPairs = defaults.value(forKey: "separatedPairs") as? Data {
             
             do {
                 SavedPairs.allPairs = try jsonDecoder.decode([String:String].self, from: savedAllPairs)
@@ -35,7 +34,8 @@ struct SavedPairs {
         let defaults = UserDefaults.standard
         let jsonEncoder = JSONEncoder()
         
-        if let savedAllPairs = try? jsonEncoder.encode(SavedPairs.allPairs), let savedSeparatedPairs = try? jsonEncoder.encode(SavedPairs.separatedPairs) {
+        if let savedAllPairs = try? jsonEncoder.encode(SavedPairs.allPairs),
+           let savedSeparatedPairs = try? jsonEncoder.encode(SavedPairs.separatedPairs) {
             
             defaults.set(savedAllPairs, forKey: "allPairs")
             defaults.set(savedSeparatedPairs, forKey: "separatedPairs")

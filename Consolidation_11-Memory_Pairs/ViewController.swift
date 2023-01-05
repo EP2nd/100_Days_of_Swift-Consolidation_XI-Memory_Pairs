@@ -10,17 +10,13 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet var gridView: UIImageView!
-    
     @IBOutlet var buttons: [UIButton]!
     
     var pairToCheck = [String]()
     var buttonsTags = [Int]()
     
     let initialView = InitialViewController()
-    var allPairs = SavedPairs.allPairs
-    var separatedPairs = SavedPairs.separatedPairs
     
-    var score = 0
     var numberOfCardsShown = 0
     var numberOfCardsPaired = 0
     
@@ -47,23 +43,22 @@ class ViewController: UIViewController {
     
     func shuffleCards(action: UIAlertAction! = nil) {
         
-        separatedPairs.removeAll()
-        separatedPairs += allPairs.keys.map { "\($0)" }
-        separatedPairs += allPairs.values.map { "\($0)" }
-        separatedPairs += [""]
+        SavedPairs.separatedPairs.removeAll()
+        SavedPairs.separatedPairs += SavedPairs.allPairs.keys.map { "\($0)" }
+        SavedPairs.separatedPairs += SavedPairs.allPairs.values.map { "\($0)" }
+        SavedPairs.separatedPairs += [""]
         
         DispatchQueue.main.async {
-            self.separatedPairs.shuffle()
+            SavedPairs.separatedPairs.shuffle()
             
             for i in 0 ..< self.buttons.count {
-                self.buttons[i].setTitle(self.separatedPairs[i], for: .normal)
+                self.buttons[i].setTitle(SavedPairs.separatedPairs[i], for: .normal)
             }
         }
     }
     
     @IBAction func cardTapped(_ sender: UIButton) {
         
-        /// Making sure no more than two buttons can be shown:
         guard numberOfCardsShown < 2 else { return }
         
         numberOfCardsShown += 1
@@ -73,19 +68,18 @@ class ViewController: UIViewController {
         pairToCheck.append(keyOrValue)
         buttonsTags.append(sender.tag)
         
-        /// Hiding the card's back and showing its content:
+        /// Hiding the card's back and showing its string:
         sender.setImage(UIImage(), for: .normal)
         sender.setTitle(keyOrValue, for: .normal)
         
         if numberOfCardsShown < 3 && pairToCheck.count == 2 {
             
-            let isFirstKey = allPairs[pairToCheck[0]] != nil
-            let isSecondKey = allPairs[pairToCheck[1]] != nil
+            /// Boolean check of the string to determine if it is one of the keys located somewhere in the dictionary of pairs:
+            let isFirstKey = SavedPairs.allPairs[pairToCheck[0]] != nil
+            let isSecondKey = SavedPairs.allPairs[pairToCheck[1]] != nil
             
             if isFirstKey {
-                
-                if allPairs[pairToCheck[0]] == pairToCheck[1] {
-                    score += 1
+                if SavedPairs.allPairs[pairToCheck[0]] == pairToCheck[1] {
                     numberOfCardsPaired += 1
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -106,8 +100,7 @@ class ViewController: UIViewController {
                 }
             } else if isSecondKey {
                 
-                if allPairs[pairToCheck[1]] == pairToCheck[0] {
-                    score += 1
+                if SavedPairs.allPairs[pairToCheck[1]] == pairToCheck[0] {
                     numberOfCardsPaired += 1
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -140,22 +133,14 @@ class ViewController: UIViewController {
         if numberOfCardsPaired == 12 {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                
                 let alertController = UIAlertController(title: "Congratulations!", message: "You managed to pair all the cards!\nTap \"Continue\" to play again!", preferredStyle: .alert)
-                
                 alertController.addAction(UIAlertAction(title: "Continue", style: .default) { [weak self] _ in
-                    
                     for button in self!.buttons {
-                        
                         button.setImage(UIImage(named: "swift"), for: .normal)
-                        
                         button.isHidden = false
                         
                         self!.numberOfCardsPaired = 0
-                        
-                        self!.score = 0
                     }
-                    
                     self!.shuffleCards()
                 })
                 
@@ -185,4 +170,3 @@ class ViewController: UIViewController {
         gridView.image = grid
     }
 }
-

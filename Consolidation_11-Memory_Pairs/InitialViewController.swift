@@ -9,15 +9,24 @@ import LocalAuthentication
 import UIKit
 
 extension UIView {
+    
     func blink() {
-        self.alpha = 0
-        UIView.animate(withDuration: 1, delay: 0, options: [.autoreverse, .repeat, .allowUserInteraction], animations: { self.alpha = 1 })
+        self.alpha = 1
+        UIView.animate(withDuration: 1, delay: 0, options: [.autoreverse, .repeat, .allowUserInteraction], animations: { self.alpha = 0.1 })
+    }
+    
+    func scale() {
+        UIView.animate(withDuration: 1, delay: 0, options: [.autoreverse, .repeat], animations: {
+            self.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            self.transform = CGAffineTransform(scaleX: 1, y: 1)
+        })
     }
 }
 
 class InitialViewController: UIViewController {
     
     @IBOutlet var startGameButton: UIButton!
+    @IBOutlet var welcomeScreenLogo: UILabel!
     @IBOutlet var addPairsButton: UIButton!
     
     var pairs = SavedPairs()
@@ -29,44 +38,15 @@ class InitialViewController: UIViewController {
         
         view.backgroundColor = UIColor(hue: 0.6, saturation: 1, brightness: 0.3, alpha: 1)
         
+        welcomeScreenLogo.scale()
         startGameButton.blink()
         
-        let defaults = UserDefaults.standard
-        
-        if let savedRunState = defaults.value(forKey: "firstRun") as? Bool {
-            firstRun = savedRunState
-            print(firstRun)
-        }
-        
-        if !firstRun {
-            DispatchQueue.global().async { [weak self] in
-                self?.pairs.load()
-                print("Second run")
-                print(SavedPairs.allPairs)
-            }
-        } else if firstRun {
-            
-            if let pairsURL = Bundle.main.url(forResource: "pairs", withExtension: "txt") {
-                if let pairs = try? String(contentsOf: pairsURL) {
-                    let lines = pairs.components(separatedBy: "\n")
-                    
-                    for line in lines {
-                        let components = line.components(separatedBy: ": ")
-                        SavedPairs.allPairs[components[0]] = components[1]
-                    }
-                }
-            }
-            
-            SavedPairs.separatedPairs += SavedPairs.allPairs.keys.map { "\($0)" }
-            SavedPairs.separatedPairs += SavedPairs.allPairs.values.map { "\($0)" }
-            SavedPairs.separatedPairs += [""]
-            
-            firstRun.toggle()
-            save()
-            
-            pairs.save()
-            print(SavedPairs.separatedPairs)
-        }
+        loadGame()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        welcomeScreenLogo.scale()
+        startGameButton.blink()
     }
     
     @IBAction func startGame(_ sender: Any) {
@@ -81,9 +61,10 @@ class InitialViewController: UIViewController {
         var error: NSError?
         
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            
             let reason = "Please identify yourself."
+            
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
-                
                 DispatchQueue.main.async {
                     if success {
                         if let viewController = self?.storyboard?.instantiateViewController(withIdentifier: "PairsTableViewController") as? PairsTableViewController {
@@ -105,9 +86,55 @@ class InitialViewController: UIViewController {
         }
     }
     
-    func save() {
+    func saveRunState() {
         let defaults = UserDefaults.standard
         
         defaults.set(firstRun, forKey: "firstRun")
+    }
+    
+    func loadRunState() {
+        let defaults = UserDefaults.standard
+        
+        if let savedRunState = defaults.value(forKey: "firstRun") as? Bool {
+            firstRun = savedRunState
+        }
+    }
+    
+    func loadPairsFromFile() {
+        if let pairsURL = Bundle.main.url(forResource: "pairs", withExtension: "txt") {
+            if let pairs = try? String(contentsOf: pairsURL) {
+                let lines = pairs.components(separatedBy: "\n")
+                
+                for line in lines {
+                    let components = line.components(separatedBy: ": ")
+                    SavedPairs.allPairs[components[0]] = components[1]
+                }
+            }
+        }
+    }
+    
+    func loadGame() {
+        
+        loadRunState()
+        
+        switch firstRun {
+        case false:
+            DispatchQueue.global().async { [weak self] in
+                self?.pairs.load()
+            }
+            print("Second run")
+        case true:
+            loadPairsFromFile()
+            
+            SavedPairs.separatedPairs += SavedPairs.allPairs.keys.map { "\($0)" }
+            SavedPairs.separatedPairs += SavedPairs.allPairs.values.map { "\($0)" }
+            SavedPairs.separatedPairs += [""]
+            
+            firstRun.toggle()
+            saveRunState()
+            
+            pairs.save()
+            print("First run")
+        }
     }
 }
