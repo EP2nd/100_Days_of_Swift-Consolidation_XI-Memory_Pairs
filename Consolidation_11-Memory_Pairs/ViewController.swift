@@ -68,9 +68,7 @@ class ViewController: UIViewController {
         pairToCheck.append(keyOrValue)
         buttonsTags.append(sender.tag)
         
-        /// Hiding the card's back and showing its string:
-        sender.setImage(UIImage(), for: .normal)
-        sender.setTitle(keyOrValue, for: .normal)
+        flipCard(card: sender, from: UIImage(), to: keyOrValue)
         
         if numberOfCardsShown < 3 && pairToCheck.count == 2 {
             
@@ -91,8 +89,7 @@ class ViewController: UIViewController {
                     }
                 } else {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.buttons[self.buttonsTags[0]].setImage(UIImage(named: "swift"), for: .normal)
-                        self.buttons[self.buttonsTags[1]].setImage(UIImage(named: "swift"), for: .normal)
+                        self.flipBack()
                         self.numberOfCardsShown = 0
                         self.pairToCheck.removeAll()
                         self.buttonsTags.removeAll()
@@ -112,8 +109,7 @@ class ViewController: UIViewController {
                     }
                 } else {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.buttons[self.buttonsTags[0]].setImage(UIImage(named: "swift"), for: .normal)
-                        self.buttons[self.buttonsTags[1]].setImage(UIImage(named: "swift"), for: .normal)
+                        self.flipBack()
                         self.numberOfCardsShown = 0
                         self.pairToCheck.removeAll()
                         self.buttonsTags.removeAll()
@@ -121,8 +117,7 @@ class ViewController: UIViewController {
                 }
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.buttons[self.buttonsTags[0]].setImage(UIImage(named: "swift"), for: .normal)
-                    self.buttons[self.buttonsTags[1]].setImage(UIImage(named: "swift"), for: .normal)
+                    self.flipBack()
                     self.numberOfCardsShown = 0
                     self.pairToCheck.removeAll()
                     self.buttonsTags.removeAll()
@@ -147,6 +142,31 @@ class ViewController: UIViewController {
                 self.present(alertController, animated: true)
             }
         }
+    }
+    
+    func flipCard(card object: UIButton, from image: UIImage, to string: String) {
+        
+        UIButton.transition(with: object, duration: 1.0, options: [
+            .transitionFlipFromBottom, .showHideTransitionViews
+        ], animations: {
+            object.setImage(image, for: .normal)
+            object.setTitle(string, for: .normal)
+        })
+    }
+    
+    func flipBack() {
+        
+        UIButton.transition(with: buttons[buttonsTags[0]], duration: 1.0, options: [
+            .transitionFlipFromBottom, .showHideTransitionViews
+        ], animations: {
+            self.buttons[self.buttonsTags[0]].setImage(UIImage(named: "swift"), for: .normal)
+        })
+        
+        UIButton.transition(with: buttons[buttonsTags[1]], duration: 1.0, options: [
+            .transitionFlipFromBottom, .showHideTransitionViews
+        ], animations: {
+            self.buttons[self.buttonsTags[1]].setImage(UIImage(named: "swift"), for: .normal)
+        })
     }
     
     func drawGridOfRectangles() {

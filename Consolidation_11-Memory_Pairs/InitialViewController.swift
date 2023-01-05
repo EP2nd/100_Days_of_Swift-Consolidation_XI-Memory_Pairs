@@ -122,7 +122,6 @@ class InitialViewController: UIViewController {
             DispatchQueue.global().async { [weak self] in
                 self?.pairs.load()
             }
-            print("Second run")
         case true:
             loadPairsFromFile()
             
@@ -134,7 +133,6 @@ class InitialViewController: UIViewController {
             saveRunState()
             
             pairs.save()
-            print("First run")
         }
     }
 }
